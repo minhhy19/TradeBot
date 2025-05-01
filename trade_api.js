@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const TelegramBot = require('node-telegram-bot-api');
 const mongoose = require('mongoose');
+const _ = require('lodash');
 
 // Khởi tạo Express
 const app = express();
@@ -110,6 +111,7 @@ async function checkTradePage() {
         for (const filter of filters) {
             // Bước 1: Gọi API 1 để lấy danh sách ID món đồ
             const searchResult = await searchItems(filter.query);
+            // console.log('searchResult', JSON.stringify(searchResult));
             const queryId = searchResult.id; // Ví dụ: EDQkqeVT5
             const itemIds = searchResult.result.slice(0, 10); // Lấy 10 ID đầu tiên
             const itemIdsString = itemIds.join(','); // Chuỗi ID để gọi API 2
@@ -126,6 +128,7 @@ async function checkTradePage() {
 
             for (let i = 0; i < items.length; i++) {
                 const item = items[i];
+                // console.log('item', JSON.stringify(item));
                 const itemId = itemIds[i]; // ID của món đồ tương ứng
                 const listing = item.listing;
                 const price = listing.price;
@@ -140,11 +143,12 @@ async function checkTradePage() {
 
                     if (isCheap) {
                         // Tạo link của món đồ
-                        const link = `https://www.pathofexile.com/trade2/exchange/poe2/Dawn%20of%20the%20Hunt/${queryId}`;
+                        const link = `https://www.pathofexile.com/trade2/search/poe2/Dawn%20of%20the%20Hunt/${queryId}`;
                         const cheapItem = {
-                            name: item.item.name || item.item.typeLine,
+                            name: _.get(item, 'item.name') || _.get(item, 'item.typeLine'),
                             price: price,
-                            link: link
+                            link: link,
+                            whisper: _.get(item, 'listing.whisper') || '',
                         };
                         cheapItems.push(cheapItem);
                     }
