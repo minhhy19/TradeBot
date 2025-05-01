@@ -169,7 +169,7 @@ async function checkTradePage() {
 // API để xem tất cả filter
 app.get('/filters', async (req, res) => {
     try {
-        const filters = await Filter.find();
+        const filters = await Filter.find().lean();
         res.status(200).json({
             message: 'Retrieved filters successfully',
             filters: filters
@@ -220,12 +220,12 @@ app.delete('/delete-filter/:id', async (req, res) => {
         const filterId = req.params.id;
 
         // Kiểm tra ID hợp lệ
-        if (!mongoose.Types.ObjectID.isValid(filterId)) {
+        if (!filterId) {
             return res.status(400).json({ message: 'Invalid filter ID' });
         }
 
         // Xóa filter
-        const result = await Filter.findByIdAndDelete(filterId);
+        const result = await Filter.findByIdAndDelete(filterId).lean();
         if (!result) {
             return res.status(404).json({ message: 'Filter not found' });
         }
