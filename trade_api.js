@@ -138,8 +138,8 @@ async function checkTradePage() {
                     const currency = price.currency;
 
                     // Kiểm tra giá: dưới maxPrice.divine hoặc maxPrice.exalted
-                    const isCheap = (currency === 'divine' && amount < filter.maxPrice.divine) || 
-                                   (currency === 'exalted' && amount < filter.maxPrice.exalted);
+                    const isCheap = (currency === 'divine' && amount <= filter.maxPrice.divine) || 
+                                   (currency === 'exalted' && amount <= filter.maxPrice.exalted);
 
                     if (isCheap) {
                         // Tạo link của món đồ
