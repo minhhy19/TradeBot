@@ -1,0 +1,15 @@
+# Node modules
+node_modules/
+
+# Env file (chứa token)
+.env
+
+# Lowdb database file
+db.json
+
+# Logs
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
