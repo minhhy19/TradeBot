@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 // Khởi tạo Express
 const app = express();
-const port = 4040;
+const port = process.env.PORT || 10000;
 
 // Cho phép nhận JSON từ body
 app.use(express.json());
